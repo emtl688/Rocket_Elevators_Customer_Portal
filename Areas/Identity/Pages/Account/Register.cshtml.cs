@@ -7,13 +7,14 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Rocket_Elevators_Customer_Portal.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using Rocket_Elevators_Customer_Portal.Areas.Identity.Data;
+using System.Net.Http;
 
 namespace Rocket_Elevators_Customer_Portal.Areas.Identity.Pages.Account
 {
@@ -81,7 +82,23 @@ namespace Rocket_Elevators_Customer_Portal.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+
+                //CHECK IF EMAIL BELONGS TO OUR CUSTOMER LIST //
+
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+
+                var client = new HttpClient();
+                var user_email = Input.Email;
+                var response = await client.GetAsync("https://rocketelevators-em.azurewebsites.net/api/Customer/verify/" + user_email);
+
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    ModelState.AddModelError(string.Empty, "This email does not belong to an existing client.");
+                    return Page();
+                }
+
+                //_____________________________________________________________________________________________________________//
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

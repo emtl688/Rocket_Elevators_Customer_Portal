@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tTcNBigqch4L8llzd3k7KqKwaPJLQI+XlqFQV/LmbMqE+LPMufdgN7J0OMTjl6EOLhX+Tgfrwv/zoOmdjzX1Wg==",
+  "dgSpecHash": "0tXKdl4p82m0tKgRAjwwlqktHa6lJUxXro48RIgwC4OHib/McPmzbedRLtDrbXVjRxxwAxl+peopbQ7Y9wv6nQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Eric\\Desktop\\Rocket_Elevators_Customer_Portal\\Rocket_Elevators_Customer_Portal.csproj",
+  "projectFilePath": "C:\\Users\\Eric\\Desktop\\CustomerPortal\\Rocket_Elevators_Customer_Portal\\Rocket_Elevators_Customer_Portal.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Eric\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.13\\microsoft.aspnetcore.cryptography.internal.3.1.13.nupkg.sha512",
     "C:\\Users\\Eric\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\3.1.13\\microsoft.aspnetcore.cryptography.keyderivation.3.1.13.nupkg.sha512",
