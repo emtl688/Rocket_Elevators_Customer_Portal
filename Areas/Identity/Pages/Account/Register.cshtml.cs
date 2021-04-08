@@ -89,7 +89,7 @@ namespace Rocket_Elevators_Customer_Portal.Areas.Identity.Pages.Account
 
                 var client = new HttpClient();
                 var user_email = Input.Email;
-                var response = await client.GetAsync("https://rocketelevators-em.azurewebsites.net/api/Customer/verify/" + user_email);
+                var response = await client.GetAsync("https://rocketelevators-em.azurewebsites.net/api/Customers/verify/" + user_email);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {

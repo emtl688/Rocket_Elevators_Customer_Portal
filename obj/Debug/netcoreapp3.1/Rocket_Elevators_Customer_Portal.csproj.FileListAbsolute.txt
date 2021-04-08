@@ -400,3 +400,4 @@ C:\Users\Eric\Desktop\CustomerPortal\Rocket_Elevators_Customer_Portal\obj\Debug\
 C:\Users\Eric\Desktop\CustomerPortal\Rocket_Elevators_Customer_Portal\obj\Debug\netcoreapp3.1\Rocket_Elevators_Customer_Portal.genruntimeconfig.cache
 C:\Users\Eric\Desktop\CustomerPortal\Rocket_Elevators_Customer_Portal\obj\Debug\netcoreapp3.1\Razor\Views\Home\Products.cshtml.g.cs
 C:\Users\Eric\Desktop\CustomerPortal\Rocket_Elevators_Customer_Portal\obj\Debug\netcoreapp3.1\Razor\Views\Home\Intervention.cshtml.g.cs
+C:\Users\Eric\Desktop\CustomerPortal\Rocket_Elevators_Customer_Portal\obj\Debug\netcoreapp3.1\Razor\Views\Home\UpdateCompanyInfo.cshtml.g.cs
