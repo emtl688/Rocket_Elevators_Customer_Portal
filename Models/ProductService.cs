@@ -24,7 +24,6 @@ namespace Rocket_Elevators_Customer_Portal.Models
                         .CreateLogger<ProductService>();
         }
 
-        // // ========== Function that calls endpoint /api/Customers/id to get all the data from the customer that is logged at the portal ============
         public Customer getFullCustomerInfo(string email)
         {
             var result = _httpClient.GetAsync("https://rocketelevators-em.azurewebsites.net/api/Customers/" + email).Result;

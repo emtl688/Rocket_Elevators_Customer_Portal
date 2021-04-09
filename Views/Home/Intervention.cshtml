@@ -8,22 +8,78 @@
     <p></p>
 </div>
 
+<form onsubmit="return createIntervention()" id="interventionForm">
+    <div id="intervention_form" class="container">
+        <div class="row">
+            <div id="typeChoice" class="col-md-12 form-group">
+                <!-- ------------ Display Company Name (ReadOnly) ----------------------------------------------- -->
+                <label for="customer_name">Customer:</label>
+                <input required type="text" id="customer_name" name="customer_name" class="form-control" value="@ViewBag.customer.CompanyName" readonly disabled>
+                <input type="hidden" id="customer_id" name="customer_id" value="@ViewBag.customer.Id">
+                <br />
+
+                <!-- ------------ Display buildings belonging to customer ------------ -->
+                <label id="building_id">Building:</label>
+
+                <select required id="building_dropdown" name="building_id" class="form-control">
+                    <option value="">Please select</option>
+                </select>
+                <br />
+
+                <!-- ------------ Display batteries belonging to selected building ------------ -->
+                <label id="battery_id">Battery:</label>
+                <select required id="battery_dropdown" name="battery_id" class="form-control">
+                    <option value="">Please select</option>
+                </select>
+                <br />
+
+                <!-- ------------ Display columns belonging to selected battery --------------- -->
+                <label id="column_id">Column:</label>
+                <select id="column_dropdown" name="column_id" class="form-control">
+                    <option value="">None</option>
+                </select>
+                <br />
+
+                <!-- ------------ Display elevators belonging to selected column -------------- -->
+                <label id="elevator_id">Elevator:</label>
+                <select id="elevator_dropdown" name="elevator_id" class="form-control">
+                    <option value="">None</option>
+                </select>
+                <br />
+
+                <!-- ------------ Description --------------------------------------------------------------------------- -->
+                <label for="project_description">Project Description</label>
+                <input required type="text" value="" class="form-control" name="description" id="description">
+                <br />
+
+                <div class="row">
+                    <!--SUBMIT BUTTON-->
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary" id="btnIntervention"><i class="fa fa-check"></i> SUBMIT INTERVENTION REQUEST </button>
+                        <br /><br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 <script>
 let customer = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.customer))');
 $(document).ready(function () {
-    
+
     function clearDropDown(id) {
         $(id).children().remove();
         $(id).append(new Option("Please select"));
     }
 
-    
+
     function clearDropDown_none(id) {
         $(id).children().remove();
         $(id).append(new Option("None"));
     }
 
-    
+
     $("#building_dropdown").on('change', function () {
         clearDropDown("#battery_dropdown");
         clearDropDown_none("#column_dropdown");
@@ -33,12 +89,12 @@ $(document).ready(function () {
 
         for (let index = 0; index < batteries.length; index++) {
             let option = new Option(batteries[index], batteries[index].id);
-            $(option).html(batteries[index].id + " - " + batteries[index].cert_ope);
+            $(option).html(batteries[index].id + " - " + batteries[index].certificateOfOperations);
             $("#battery_dropdown").append(option);
         }
     });
 
-    
+
     $("#battery_dropdown").on('change', function () {
         clearDropDown_none("#column_dropdown");
         clearDropDown_none("#elevator_dropdown");
@@ -57,7 +113,7 @@ $(document).ready(function () {
         }
     });
 
-    
+
     $("#column_dropdown").on('change', function () {
         clearDropDown_none("#elevator_dropdown");
         let building_id = $('#building_dropdown option:selected').val();
@@ -71,12 +127,12 @@ $(document).ready(function () {
         let elevators = column.elevators;
         for (let index = 0; index < elevators.length; index++) {
             let option = new Option(elevators[index], elevators[index].id);
-            $(option).html(elevators[index].id + " - " + elevators[index].serial_number + " - " + elevators[index].status);
+            $(option).html(elevators[index].id + " - " + elevators[index].serialNumber + " - " + elevators[index].status);
             $("#elevator_dropdown").append(option);
         }
     });
 
-    
+
     clearDropDown("#building_dropdown");
     clearDropDown("#battery_dropdown");
     clearDropDown_none("#column_dropdown");
@@ -169,91 +225,4 @@ $(document).ready(function () {
 
     }
 });
-
-function createIntervention() {
-    var data = {
-        customerId: $('#customer_id').val(),
-        authorId: $('#customer_id').val(),
-        buildingId: $('#building_dropdown').val(),
-        batteryId: $('#battery_dropdown').val(),
-        columnId: $('#column_dropdown').val(),
-        elevatorId: $('#elevator_dropdown').val(),
-        report: $('#report').val()
-    };
-
-    $.ajax({
-        url: 'https://rocketelevators-em.azurewebsites.net/api/Intervention',
-        type: 'POST',
-        data: JSON.stringify(data),
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "HEAD, GET, POST, PUT, PATCH, DELETE",
-            "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With",
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        success: function (result) {
-            alert('Intervention created successfully!');
-            return false;
-        }
-    });
-
-    return false;
-}
 </script>
-<form onsubmit="return createIntervention()" id="interventionForm">
-    <div id="intervention_form" class="container">
-        <div class="row">
-            <div id="typeChoice" class="col-md-12 form-group">
-                <!-- *********************************************** DYNAMIC DROPDOWNS *********************************************** -->
-                <!-- ------------ DropDown Selector listing all customers ----------------------------------------------- -->
-                <label for="customer_name">Customer:</label>
-                <input required type="text" id="customer_name" name="customer_name" class="form-control" value="@ViewBag.customer.CompanyName" readonly disabled>
-                <input type="hidden" id="customer_id" name="customer_id" value="@ViewBag.customer.Id">
-                <br />
-
-                <!-- ------------ DropDown Selector listing all buildings belonging to the selected customer ------------ -->
-                <label id="building_id">Building:</label>
-
-                <select required id="building_dropdown" name="building_id" class="form-control">
-                    <option value="">Please select</option>
-                </select>
-                <br />
-
-                <!-- ------------ DropDown Selector listing all batteries belonging to the selected building ------------ -->
-                <label id="battery_id">Battery:</label>
-                <select required id="battery_dropdown" name="battery_id" class="form-control">
-                    <option value="">Please select</option>
-                </select>
-                <br />
-
-                <!-- ------------ DropDown Selector listing all columns belonging to the selected battery --------------- -->
-                <label id="column_id">Column:</label>
-                <select id="column_dropdown" name="column_id" class="form-control">
-                    <option value="">None</option>
-                </select>
-                <br />
-
-                <!-- ------------ DropDown Selector listing all elevators belonging to the selected column -------------- -->
-                <label id="elevator_id">Elevator:</label>
-                <select id="elevator_dropdown" name="elevator_id" class="form-control">
-                    <option value="">None</option>
-                </select>
-                <br />
-
-                <!-- ------------ Description --------------------------------------------------------------------------- -->
-                <label for="project_description">Project Description</label>
-                <input required type="text" value="" class="form-control" name="report" id="report">
-                <br />
-
-                <div class="row">
-                    <!--submit-->
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary" id="btnIntervention"><i class="fa fa-check"></i> SUBMIT INTERVENTION</button>
-                        <br /><br />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>

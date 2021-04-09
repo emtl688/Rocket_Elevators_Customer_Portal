@@ -29,17 +29,19 @@
                                 <th>Battery Id</th>
                                 <th>Building Id</th>
                                 <th>Status</th>
-                                <th>Certificate of Operations</th>
+                                <th>Certificate Operation</th>
+                                <th>New Intervention</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var Battery in Model.Buildings.SelectMany(Building => Building.Batteries))
+                            @foreach (var battery in Model.Buildings.SelectMany(bu => bu.Batteries))
                             {
                                 <tr>
-                                    <td>@Battery.Id</td>
-                                    <td>@Battery.BuildingId</td>
-                                    <td>@Battery.Status</td>
-                                    <td>@Battery.CertificateOfOperations</td>
+                                    <td>@battery.Id</td>
+                                    <td>@battery.BuildingId</td>
+                                    <td>@battery.Status</td>
+                                    <td>@battery.CertificateOfOperations</td>
+                                    <td><a href="@Url.Action("Intervention", "Home", new { batteryId = battery.Id, buildingId = battery.BuildingId })">Edit</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -67,10 +69,11 @@
                                 <th>Building Type</th>
                                 <th>Floors Served</th>
                                 <th>Status</th>
+                                <th>New Intervention</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var column in Model.Buildings.SelectMany(building => building.Batteries.SelectMany(battery => battery.Columns)))
+                            @foreach (var column in Model.Buildings.SelectMany(bu => bu.Batteries.SelectMany(ba => ba.Columns)))
                             {
                                 <tr>
                                     <td>@column.Id</td>
@@ -78,6 +81,7 @@
                                     <td>@column.BuildingType</td>
                                     <td>@column.NumberOfFloorsServed</td>
                                     <td>@column.Status</td>
+                                    <td><a href="@Url.Action("Intervention", "Home", new { columnId = column.Id, batteryId = column.BatteryId })">Edit</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -105,10 +109,11 @@
                                 <th>Model</th>
                                 <th>Serial Number</th>
                                 <th>Status</th>
+                                <th>New Intervention</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var elevator in Model.Buildings.SelectMany(building => building.Batteries.SelectMany(battery => battery.Columns.SelectMany(column => column.Elevators))))
+                            @foreach (var elevator in Model.Buildings.SelectMany(bu => bu.Batteries.SelectMany(ba => ba.Columns.SelectMany(co => co.Elevators))))
                             {
                                 <tr>
                                     <td>@elevator.Id</td>
@@ -116,6 +121,7 @@
                                     <td>@elevator.Model</td>
                                     <td>@elevator.SerialNumber</td>
                                     <td>@elevator.Status</td>
+                                    <td><a href="@Url.Action("Intervention", "Home", new { elevatorId = elevator.Id, columnId = elevator.ColumnId, elevatorSerialNumber = elevator.SerialNumber })">Edit</a></td>
                                 </tr>
                             }
                         </tbody>
