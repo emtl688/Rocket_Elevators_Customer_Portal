@@ -8,6 +8,39 @@
     <p></p>
 </div>
 
+<script>
+    function updateCustomer() {
+        var data = {
+            companyName: $('#company_name').val(),
+            companyDescription: $('#description').val(),
+            fullNameOfCompanyContact: $('#contact_name').val(),
+            companyContactPhone: $('#contact_phone').val(),
+            fullNameOfServiceTechnicalAuthority: $('#tech_name').val(),
+            technicalAuthorityPhoneForService: $('#tech_phone').val(),
+            technicalManagerEmailForService: $('#tech_mail').val()
+        };
+
+        $.ajax({
+            url: 'https://rocketelevators-em.azurewebsites.net/api/Customers',
+            type: 'PUT',
+            data: JSON.stringify(data),
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "HEAD, GET, POST, PUT, PATCH, DELETE",
+                "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With",
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            success: function (result) {
+                alert('Successfully Updated Information');
+                return false;
+            }
+        });
+
+        return false;
+    }
+</script>
+
 <form onsubmit="return updateCustomer();" id="customerForm">
     <div class="container">
         <div class="row">

@@ -18,7 +18,7 @@ namespace Rocket_Elevators_Customer_Portal.Models
         public ProductService()
         {
             var serviceProvider = new ServiceCollection()
-                      .AddLogging() //<-- You were missing this
+                      .AddLogging()
                       .BuildServiceProvider();
             _logger = serviceProvider.GetService<ILoggerFactory>()
                         .CreateLogger<ProductService>();

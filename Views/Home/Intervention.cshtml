@@ -65,6 +65,38 @@
 </form>
 
 <script>
+
+    function createIntervention() {
+        var data = {
+            customerId: $('#customer_id').val(),
+            authorId: $('#customer_id').val(),
+            buildingId: $('#building_dropdown').val(),
+            batteryId: $('#battery_dropdown').val(),
+            columnId: $('#column_dropdown').val(),
+            elevatorId: $('#elevator_dropdown').val(),
+            report: $('#report').val()
+        };
+
+        $.ajax({
+            url: 'https://rocketelevators-em.azurewebsites.net/api/Intervention',
+            type: 'POST',
+            data: JSON.stringify(data),
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "HEAD, GET, POST, PUT, PATCH, DELETE",
+                "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With",
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            success: function (result) {
+                alert('Intervention created successfully!');
+                return false;
+            }
+        });
+
+        return false;
+    }
+
 let customer = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.customer))');
 $(document).ready(function () {
 
