@@ -49,8 +49,17 @@ namespace Rocket_Elevators_Customer_Portal.Controllers
             return View();
         }
 
-        public IActionResult Products()
+        public IActionResult Products(string columnId, string elevatorId, string buildingId, string batteryId)
         {
+            var user_email = _userManager.GetUserName(User);
+            var customer = _productService.getFullCustomerInfo(user_email);
+
+            ViewBag.ColumnId = columnId;
+            ViewBag.ElevatorId = elevatorId;
+            ViewBag.BuildingId = buildingId;
+            ViewBag.BatteryId = batteryId;
+            ViewBag.Customer = customer;
+
             return View();
         }
 

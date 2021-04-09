@@ -1,11 +1,126 @@
-﻿@model Customer
-
-@{
+﻿@{
     ViewData["Title"] = "My Products";
 }
 
+<script src="~/js/jquery-3.5.1.min.js"></script>
 <div class="text-center">
     <h1 class="display-4">My Rocket Elevators Products</h1>
-    <p> This section is under construction </p>
+    <p></p>
 </div>
+
+<form onsubmit="return createIntervention()" id="interventionForm">
+    <div id="intervention_form" class="container">
+        <div class="row">
+            <div id="typeChoice" class="col-md-12 form-group">
+                <!-- ------------ Display Company Name (ReadOnly) ----------------------------------------------- -->
+                <label for="customer_name">Customer:</label>
+                <input required type="text" id="customer_name" name="customer_name" class="form-control" value="@ViewBag.customer.CompanyName" readonly disabled>
+                <input type="hidden" id="customer_id" name="customer_id" value="@ViewBag.customer.Id">
+                <br />
+
+                <!-- ------------ Display buildings belonging to customer ------------ -->
+                <label id="building_id">My Buildings:</label>
+
+                <select required id="building_dropdown" name="building_id" class="form-control">
+                    <option value="">Please select</option>
+                </select>
+                <br />
+
+                <!-- ------------ Display batteries ------------ -->
+                <label id="battery_id">My Batteries:</label>
+                <select required id="battery_dropdown" name="battery_id" class="form-control">
+                    <option value="">Please select</option>
+                </select>
+                <br />
+
+                <!-- ------------ Display columns --------------- -->
+                <label id="column_id">My Columns:</label>
+                <select id="column_dropdown" name="column_id" class="form-control">
+                    <option value="">None</option>
+                </select>
+                <br />
+
+                <!-- ------------ Display elevators -------------- -->
+                <label id="elevator_id">My Elevators:</label>
+                <select id="elevator_dropdown" name="elevator_id" class="form-control">
+                    <option value="">None</option>
+                </select>
+                <br />
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+
+
+let customer = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.customer))');
+$(document).ready(function () {
+
+
+
+    $("#building_dropdown").on('change', function () {
+
+        let batteries = customer.buildings.find(building => building.id == (this.value)).batteries;
+
+        for (let index = 0; index < batteries.length; index++) {
+            let option = new Option(batteries[index], batteries[index].id);
+            $(option).html(batteries[index].id + " - Certificate of Operations: " + batteries[index].certificateOfOperations + " - Current Status: " + batteries[index].status);
+            $("#battery_dropdown").append(option);
+        }
+    });
+
+
+    $("#battery_dropdown").on('change', function () {
+
+        let building_id = $('#building_dropdown option:selected').val();
+
+        battery = customer
+            .buildings.find(building => building.id == building_id)
+            .batteries.find(battery => battery.id == this.value);
+
+        let columns = battery.columns;
+        for (let index = 0; index < columns.length; index++) {
+            let option = new Option(columns[index], columns[index].id);
+            $(option).html(columns[index].id + " - Current Status: " + columns[index].status + " - Number of Floors Served: " + columns[index].numberOfFloorsServed);
+            $("#column_dropdown").append(option);
+        }
+    });
+
+
+    $("#column_dropdown").on('change', function () {
+        
+        let building_id = $('#building_dropdown option:selected').val();
+        let battery_id = $('#battery_dropdown option:selected').val();
+
+        column = customer
+            .buildings.find(building => building.id == building_id)
+            .batteries.find(battery => battery.id == battery_id)
+            .columns.find(column => column.id == this.value);
+
+        let elevators = column.elevators;
+        for (let index = 0; index < elevators.length; index++) {
+            let option = new Option(elevators[index], elevators[index].id);
+            $(option).html(elevators[index].id + " - Serial Number: " + elevators[index].serialNumber + " - Current Status: " + elevators[index].status);
+            $("#elevator_dropdown").append(option);
+        }
+    });
+
+
+
+    let batteryId = '@Html.Raw(@ViewBag.BatteryId)';
+    let columnId= '@Html.Raw(@ViewBag.ColumnId)';
+    let elevatorId= '@Html.Raw(@ViewBag.ElevatorId)';
+
+
+    let buildings = customer.buildings;
+    for (let index = 0; index < buildings.length; index++) {
+        let option = new Option(buildings[index], buildings[index].id);
+        $(option).html(buildings[index].id);
+        $("#building_dropdown").append(option);
+    }
+
+});
+</script>
 
