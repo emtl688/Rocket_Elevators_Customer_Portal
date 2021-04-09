@@ -1,9 +1,128 @@
-﻿@{
+﻿@model Customer
+
+@{
     ViewData["Title"] = "My Products";
 }
 
 <div class="text-center">
-    <br />
-    <h6 class="display-4">View information about your Rocket Elevators products</h6>
-    <p></p>
+    <h1 class="display-4">Product management</h1>
+    <p>
+        See the details of the different products purchased from us: batteries, columns and elevators.
+    </p>
+
+    <div class="accordion" id="accordionExample">
+
+        @* =========================================== BATTERIES =========================================== *@
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Batteries
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Battery Id</th>
+                                <th>Building Id</th>
+                                <th>Status</th>
+                                <th>Certificate of Operations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var Battery in Model.Buildings.SelectMany(Building => Building.Batteries))
+                            {
+                                <tr>
+                                    <td>@Battery.Id</td>
+                                    <td>@Battery.BuildingId</td>
+                                    <td>@Battery.Status</td>
+                                    <td>@Battery.CertificateOfOperations</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @* =========================================== COLLUMNS =========================================== *@
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Columns
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Column Id</th>
+                                <th>Battery Id</th>
+                                <th>Building Type</th>
+                                <th>Floors Served</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var column in Model.Buildings.SelectMany(building => building.Batteries.SelectMany(battery => battery.Columns)))
+                            {
+                                <tr>
+                                    <td>@column.Id</td>
+                                    <td>@column.BatteryId</td>
+                                    <td>@column.BuildingType</td>
+                                    <td>@column.NumberOfFloorsServed</td>
+                                    <td>@column.Status</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Elevators
+                    </button>
+                </h5>
+            </div>
+
+            @* =========================================== ELEVATORS =========================================== *@
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Elevator Id</th>
+                                <th>Column Id</th>
+                                <th>Model</th>
+                                <th>Serial Number</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var elevator in Model.Buildings.SelectMany(building => building.Batteries.SelectMany(battery => battery.Columns.SelectMany(column => column.Elevators))))
+                            {
+                                <tr>
+                                    <td>@elevator.Id</td>
+                                    <td>@elevator.ColumnId</td>
+                                    <td>@elevator.Model</td>
+                                    <td>@elevator.SerialNumber</td>
+                                    <td>@elevator.Status</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+

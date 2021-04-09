@@ -35,13 +35,20 @@ namespace Rocket_Elevators_Customer_Portal.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        // Action to render the Intervention Form page
-        public IActionResult Intervention()
+        public IActionResult Intervention(string columnId, string elevatorId, string buildingId, string batteryId)
         {
+            var user_email = _userManager.GetUserName(User);
+            var customer = _productService.getFullCustomerInfo(user_email);
+
+            ViewBag.ColumnId = columnId;
+            ViewBag.ElevatorId = elevatorId;
+            ViewBag.BuildingId = buildingId;
+            ViewBag.BatteryId = batteryId;
+            ViewBag.Customer = customer;
+
             return View();
         }
 
-        // Action to render the Products page
         public IActionResult Products()
         {
             return View();
@@ -60,13 +67,8 @@ namespace Rocket_Elevators_Customer_Portal.Controllers
         public IActionResult getFullCustomerInfo()
         {
             var user_email = _userManager.GetUserName(User);
-            Console.WriteLine("email: " + user_email);
 
             var customer = _productService.getFullCustomerInfo(user_email);
-
-            Console.WriteLine("Called getFullCustomerInfo");
-
-            _logger.LogInformation(" !!! CALLED FUNCTION getFullCustomerInfo !!! ");
 
             return View("~/Views/Home/Products.cshtml", customer);
         }
